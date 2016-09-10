@@ -4,13 +4,12 @@
 ;;;
 ;;; Check one:
 ;;; [ ] I completed this assignment without assistance or external resources.
-;;; [ ] I completed this assignment with assistance from ___
-;;;     and/or using these external resources: ___
+;;; [x] I completed this assignment alongside David Abrahams (although we went about some if it differently)
+;;;     and using racket documentation
 
 ;;; 1.  Create a calculator that takes one argument: a list that represents an expression.
 
-
-
+;;helper function for the caluclate function
 (define (get-nth lst num)
 	;if n=0 returnt the first of list
 	(if (= num 0) (first lst)
@@ -36,31 +35,34 @@
 	  						(< (calculate (get-nth x 1)) (calculate (get-nth x 2)))
 	  							(if (eq? (first x) 'GE)
 	  							(>= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
-	  								(if (eq? (first x) 'LE)
-	  								(<= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
-	  									(if (eq? (first x) 'EQ)
-	  									(= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
-	  										(if (eq? (first x) 'NEQ)
-	  										(not (= (calculate (get-nth x 1)) (calculate (get-nth x 2))))
-		  										(if (eq? (first x) 'ANND)
-		  										(and (calculate (get-nth x 1)) (calculate (get-nth x 2)))
-			  										(if (eq? (first x) 'ORR)
-			  										(or (calculate (get-nth x 1)) (calculate (get-nth x 2)))
-				  										(if (eq? (first x) 'NOTT)
-				  										(not (calculate (get-nth x 1)))
-					  										(if (eq? (first x) 'IPH)
-						  										(if (calculate (get-nth x 1))
-						  											(calculate (get-nth x 2)) 
-						  											(calculate (get-nth x 3))
+	  								(if (eq? (first x) 'POW)
+	  								(expt (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+		  								(if (eq? (first x) 'LE)
+		  								(<= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+		  									(if (eq? (first x) 'EQ)
+		  									(= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+		  										(if (eq? (first x) 'NEQ)
+		  										(not (= (calculate (get-nth x 1)) (calculate (get-nth x 2))))
+			  										(if (eq? (first x) 'ANND)
+			  										(and (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+				  										(if (eq? (first x) 'ORR)
+				  										(or (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+					  										(if (eq? (first x) 'NOTT)
+					  										(not (calculate (get-nth x 1)))
+						  										(if (eq? (first x) 'IPH)
+							  										(if (calculate (get-nth x 1))
+							  											(calculate (get-nth x 2)) 
+							  											(calculate (get-nth x 3))
+							  										)
+							  										'YO
 						  										)
-						  										'YO
 					  										)
-				  										)
+					  									)
 				  									)
-			  									)
-	  		  								)
-	  		  							)
-	  		  						)
+		  		  								)
+		  		  							)
+		  		  						)
+		  		  					)	
 	  		  					)
 	  		  				)
 	  		  			)	
@@ -97,3 +99,7 @@
 ;;; 5. Add IPH
 
 (calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
+
+;;; 6. Power functions
+
+(calculate '(POW (MUL (ADD 6 7) (SUB 8 7))(SUB (MUL 4 2) (DIV 6 2))));; -> 371293
