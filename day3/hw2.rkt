@@ -54,7 +54,7 @@
 							  											(calculate (get-nth x 2)) 
 							  											(calculate (get-nth x 3))
 							  										)
-							  										'YO
+							  										'YO  ;;need an else statement
 						  										)
 					  										)
 					  									)
