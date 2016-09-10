@@ -48,7 +48,13 @@
 			  										(or (calculate (get-nth x 1)) (calculate (get-nth x 2)))
 				  										(if (eq? (first x) 'NOTT)
 				  										(not (calculate (get-nth x 1)))
-				  										'YO
+					  										(if (eq? (first x) 'IPH)
+						  										(if (calculate (get-nth x 1))
+						  											(calculate (get-nth x 2)) 
+						  											(calculate (get-nth x 3))
+						  										)
+						  										'YO
+					  										)
 				  										)
 				  									)
 			  									)
@@ -90,4 +96,4 @@
 
 ;;; 5. Add IPH
 
-; (calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
+(calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
