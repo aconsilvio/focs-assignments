@@ -42,7 +42,16 @@
 	  									(= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
 	  										(if (eq? (first x) 'NEQ)
 	  										(not (= (calculate (get-nth x 1)) (calculate (get-nth x 2))))
-	  		  								'YO
+		  										(if (eq? (first x) 'ANND)
+		  										(and (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+			  										(if (eq? (first x) 'ORR)
+			  										(or (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+				  										(if (eq? (first x) 'NOTT)
+				  										(not (calculate (get-nth x 1)))
+				  										'YO
+				  										)
+				  									)
+			  									)
 	  		  								)
 	  		  							)
 	  		  						)
@@ -75,7 +84,9 @@
 
 ;;; 4. Add boolean operations ANND, ORR, NOTT
 
-; (calculate '(AND (GT (ADD 3 4) (MUL 5 6))) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
+(calculate '(ANND (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
+(calculate '(ORR (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #T
+(calculate '(NOTT (GT (ADD 3 4) (MUL 5 6)))) ;; --> #t
 
 ;;; 5. Add IPH
 
