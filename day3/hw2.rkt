@@ -1,6 +1,6 @@
 #lang racket
 
-;;; Student Name: Frankly Olin [change to your name]
+;;; Student Name: Annabel Consilvio
 ;;;
 ;;; Check one:
 ;;; [ ] I completed this assignment without assistance or external resources.
@@ -9,10 +9,57 @@
 
 ;;; 1.  Create a calculator that takes one argument: a list that represents an expression.
 
+
+
+(define (get-nth lst num)
+	;if n=0 returnt the first of list
+	(if (= num 0) (first lst)
+		;else return the n-1th element of the list
+		(get-nth (rest lst) (- num 1))
+	)
+)
+
 (define (calculate x)
-  your-code-here)
+	(if (number? x)
+		x
+		(if (eq? (first x) 'ADD)
+	  		(+ (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  		(if (eq? (first x) 'SUB)
+	  			(- (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+				(if (eq? (first x) 'MUL)
+	  				(* (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  		  		(if (eq? (first x) 'DIV)
+	  				(/ (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  					(if (eq? (first x) 'GT)
+	  						(> (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  						(if (eq? (first x) 'LT)
+	  						(< (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  							(if (eq? (first x) 'GE)
+	  							(>= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  								(if (eq? (first x) 'LE)
+	  								(<= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  									(if (eq? (first x) 'EQ)
+	  									(= (calculate (get-nth x 1)) (calculate (get-nth x 2)))
+	  										(if (eq? (first x) 'NEQ)
+	  										(not (= (calculate (get-nth x 1)) (calculate (get-nth x 2))))
+	  		  								'YO
+	  		  								)
+	  		  							)
+	  		  						)
+	  		  					)
+	  		  				)
+	  		  			)	
+	  		  		)
+	  			) 
+		  	)
+		)
+	)
+)
 
 (calculate '(ADD 3 4)) ;; --> 7
+(calculate '(SUB 4 2)) ;; --> 2
+(calculate '(MUL 4 4)) ;; --> 16
+(calculate '(DIV 4 4)) ;; --> 1
 
 ;;; 2. Expand the calculator's operation to allow for arguments that are themselves well-formed arithmetic expressions.
 
@@ -28,8 +75,8 @@
 
 ;;; 4. Add boolean operations ANND, ORR, NOTT
 
-(calculate '(AND (GT (ADD 3 4) (MUL 5 6))) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
+; (calculate '(AND (GT (ADD 3 4) (MUL 5 6))) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
 
 ;;; 5. Add IPH
 
-(calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
+; (calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
