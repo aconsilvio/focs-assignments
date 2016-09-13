@@ -67,7 +67,7 @@
 (define (calculate x lookup-list)
 	(if (number? x)
 		x
-		((evaluate (first x) operator-list) (second x) (third x))
+		((evaluate (first x) operator-list) (calculate (second x) lookup-list) (calculate (third x) lookup-list))
 	)
 )
 
