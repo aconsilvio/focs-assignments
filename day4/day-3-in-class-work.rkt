@@ -1,44 +1,56 @@
-#lang racket
-
 ;;;;;;;;;;
 ;;; Day 3 in class work
 
-;;;;;;;;;;
-;; 0.  Implement factorial both recursively and tail recursively.
-;;     Hint:  The tail recursive version will use a helper function.
+#lang racket
+
+;;0. Factorial
+(define (fact n)
+  (if (= n 0) 1 (* (fact (- n 1)) n)))
+
+(define (fact2 n)  ;;tail implementation
+	(fact2-helper n 1))
+
+(define (fact2-helper num accu)
+	(if (= num 0) 
+		accu
+		(fact2-helper (- num 1) (* accu num))
+	)
+)
+
+(display (fact 3)) (newline) ;; -> 6
+(display (fact2 3)) (newline) ;; -> 6
 
 
-;;;;;;;;;;;
-;; 1.  Filter is built in to scheme.
+;; 1. my filter
+(define (my-filter op lst)
+	(if (empty? lst)
+		lst
+		(let ([filt-rest (my-filter op (rest lst))])
+			(if (op (first lst))
+				(cons (first lst) filt-rest)
+				filt-rest
+			)
+		)
+	)
+)
 
-;; (filter even? '(1 2 3 4 5 6))  --> '(2 4 6)  ;; using the built-in even?
-;; (filter teen? '(21 17 2 13 4 42 2 16 3)) --> '(17 13 16)
-                        ;; assuming (define (teen x) (and (<= 13 x) (<= x 19)))))
-;; (filter list? '(3 (3 2 1) symbol (4 2) (1 (2) 3)) --> '((3 2 1) (4 2) (1 (2) 3))
-
-;; Implement it anyway.  You might want to call it my-filter?  What arguments does it take?
-
-
-
-
-
-;;;;;;;;;;;
-;; 2.  Map is also built in to scheme.
-
-;; (map double '(1 2 3))  --> '(4 5 6)  ;; assuming (define (double x) (* 2 x))
-;; (map incr '(1 2 3)) --> '(2 3 4)     ;; assuming (define (incr x) (+ x 1))
-;; (map last '((3 2 1) (4 2) (1 2 3)) --> '(1 2 3)
-                                        ;; assuming (define (last lst)
-                                        ;;            (if (null? (rest lst))
-                                        ;;                (first lst)
-                                        ;;                (last (rest lst))))
-
-;; Implement it as well.  You might want to call it my-map.  What arguments does it take?
+(display (my-filter even? '(12 3 4 5 6 17 23 12))) (newline)
 
 
+;;2. my map
+(define (my-map op lst)
+	(if (empty? lst)
+		lst
+		(let ([filt-rest (my-map op (rest lst))])
+				(cons (op (first lst)) filt-rest)
+		)
+	)
+)
 
+(define (double x)
+	(* 2 x))
 
-
+(display (my-map double '(2 3 4 5) ))(newline)
 
 
 ;;;;;;;;;;;
@@ -51,26 +63,61 @@
 ;; You might want to draw out the box and pointer structures for the original two lists
 ;; as well as for the new list.  Confirm with a member of the instructional staff....
 
+; (define (my-append lst1 lst2)  ;; we tried this way but the list came out backward so we tried it without an accumulator
+; 	(append-helper lst1 lst2 '()))
 
+; (define (append-helper l1 l2 accu)
+; 	(if (empty? l1)
+; 		(if (empty? l2)
+; 			accu
+; 			(append-helper l1 (rest l2) (cons (first l2) accu))
+; 		)
+; 		(append-helper (rest l1) l2 (cons (first l1) accu))
+; 	)
+; )
 
+(define (my-append l1 l2)
+	(if (empty? l1)
+		(if (empty? l2)
+			'()
+			(cons (first l2) (my-append l1 (rest l2)))
+			)
+		(cons (first l1) (my-append (rest l1) l2))
+	)
+)
+(display (my-append '(1 2 3) '(4 5 6))) (newline);; --> '(1 2 3 4 5 6)
 
 
 ;;;;;;;;;;;
 ;; 4.  zip takes two lists, and returns a list of elements of size two, until one of the lists runs out.
 
-;; (zip '(1 2 3) '(4 5 6)) ;; --> '((1 4) (2 5) (3 6))
-;; (zip '(1 2 3) '(a b c d e f g)) ;; --> '((1 a) (2 b) (3 c))
 
 ;; Implement `zip`.
+(define (my-zip l1 l2)
+	(if (or (empty? l1) (empty? l2))
+		'()
+		(cons (cons (first l1) (cons (first l2) '())) (my-zip (rest l1) (rest l2)))
+	)
+)
 
 
+(my-zip '(1 2 3) '(4 5 6)) ;; --> '((1 4) (2 5) (3 6))
+(my-zip '(1 2 3) '(a b c d e f g)) ;; --> '((1 a) (2 b) (3 c))
 
 
 ;;;;;;;;;;;;
 ;; 5.  Last built-in (for now):  (my-)reverse.
 ;;     Takes a list, returns a new list with the elements reversed.
 
-;; (reverse '(1 2 3)) --> '(3 2 1)
+(define (my-reverse lst)
+	(if (empty? lst)
+		lst
+		(my-append (my-reverse (rest lst)) (list (first lst)))
+	)
+)
+
+
+(my-reverse '(1 2 3)) ;;--> '(3 2 1)
 
 
 
