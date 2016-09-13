@@ -1,11 +1,10 @@
 #lang racket
 
-;;; Student Name: Frankly Olin [change to your name]
-;;;
+;;; Student Name: Annabel Consilvio
 ;;; Check one:
 ;;; [ ] I completed this assignment without assistance or external resources.
-;;; [ ] I completed this assignment with assistance from ___
-;;;     and/or using these external resources: ___
+;;; [x] I completed this assignment with Bill and David (we worked in parallel, and helped each other debug)
+;;;     and/or using these external resources racket documentation
 
 ;;;;;;;;;;;
 ;; 1. assq
