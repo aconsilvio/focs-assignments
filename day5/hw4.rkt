@@ -1,11 +1,9 @@
 #lang racket
 
-;;; Student Name: Frankly Olin [change to your name]
-;;;
+;;; Student Name: Annabel Consilvio
 ;;; Check one:
 ;;; [ ] I completed this assignment without assistance or external resources.
-;;; [ ] I completed this assignment with assistance from ___
-;;;     and/or using these external resources: ___
+;;; [x] I completed this assignment with assistance from David and Sophie.
 
 (define operator-list
   (list (list 'ADD +)
@@ -31,7 +29,7 @@
 
 (define (repl env)
   (display "> ")
-  (display env)
+  ; (display env)
   (display (calculate (read) env))
   (newline)
   (repl env)
@@ -48,26 +46,41 @@
 	)
 )
 
-(define (define? lst)
+(define (lookup? lst word)
 	(if (list? lst)
-		(if (eq? (first lst) 'DEFINE)
+		(if (eq? (first lst) word)
 			#t
 			#f)
 		#f
 	)
 )
 
+; (define (apply-lam )
+
+; )
+
 (define (calculate x env)		
-	(if (define? x)
+	(if (lookup? x 'DEFINE)
 		(repl (append env (list (list (second x) (third x)))))
-		(if (number? x)
-			x
-			(if (symbol? x)
-				(evaluate x env)
-				((evaluate (first x) env) (calculate (second x) env) (calculate (third x) env))
+		(if (lookup? x 'LAMBDA)
+			(list 'lambda (rest x) env)
+			(if (number? x)
+				x
+				(if (symbol? x)
+					(evaluate x env)
+					((evaluate (first x) env) (calculate (second x) env) (calculate (third x) env))
+				)
 			)
 		)
 	)
 )
+
+(define (my-zip l1 l2)
+	(if (or (empty? l1) (empty? l2))
+		'()
+		(cons (cons (first l1) (cons (first l2) '())) (my-zip (rest l1) (rest l2)))
+	)
+)
+
 
 (run-repl)
