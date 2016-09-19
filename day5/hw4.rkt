@@ -55,20 +55,28 @@
 	)
 )
 
-; (define (apply-lam )
-
+; (define (apply-lam lst)
+; 	(repl (append env (list (list (rest lst)))))
+; 	(calculate (second (first lst)))
+; 	;; save the end variables to the env
+; 	;; calculate the center bit where the normal code is using these functions
 ; )
 
-(define (calculate x env)		
-	(if (lookup? x 'DEFINE)
-		(repl (append env (list (list (second x) (third x)))))
-		(if (lookup? x 'LAMBDA)
-			(list 'lambda (rest x) env)
-			(if (number? x)
-				x
-				(if (symbol? x)
-					(evaluate x env)
-					((evaluate (first x) env) (calculate (second x) env) (calculate (third x) env))
+(define (calculate x env)	
+	(if (number? x)
+		x	
+		(if (symbol? x)
+			(evaluate x env)
+			(if (lookup? x 'DEFINE)
+				(repl (append env (list (list (second x) (third x)))))
+				(if (lookup? x 'LAMBDA)
+					(list 'lambda (rest x) env)
+					(if (lookup? (first x) 'LAMBDA)
+						 ; (repl (append env (my-zip (second (first x)) (rest x))))			
+						 (calculate (third (first x)) (append env (my-zip (second (first x)) (rest x))))
+								; (second x) 
+						((evaluate (first x) env) (calculate (second x) env) (calculate (third x) env))
+					)
 				)
 			)
 		)
