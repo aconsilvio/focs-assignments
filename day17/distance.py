@@ -46,6 +46,7 @@ class Node(object):
 
     def __repr__(self):
         return self.label
+        return self.distance
 
 
 def bfs(graph, start):
@@ -64,26 +65,6 @@ def bfs(graph, start):
         n = remaining_nodes.get()
         visit(n)
 
-def spanningtree(graph, start):
-    remaining_nodes = Queue()
-    visited = []
-    edges = []
-
-    def visit(node):
-        # print(node)
-        visited.append(node.label)
-        for tail in graph.successors(node):
-            if tail.label not in visited:
-                edges.append((node.label, tail.label))
-                remaining_nodes.put(tail)
-
-    remaining_nodes.put(start)
-    while not remaining_nodes.empty():
-        n = remaining_nodes.get()
-        visit(n)
-
-    #print(node_and_edge_labels_to_objects(visited, edges))
-    return node_and_edge_labels_to_objects(visited, edges)
 
 def bfs_distance(graph, start):
     remaining_nodes = Queue()
@@ -96,7 +77,6 @@ def bfs_distance(graph, start):
         for tail in graph.successors(node):
             if tail not in visited:
                 tail.distance = node.distance + 1
-                print(tail.distance)
                 remaining_nodes.put(tail)
 
     remaining_nodes.put(start)
@@ -104,21 +84,13 @@ def bfs_distance(graph, start):
         n = remaining_nodes.get()
         visit(n)
 
-def node_and_edge_labels_to_objects(node_labels, edge_labels):
-    """Given a list of node labels, and a list of edges of the form (head_label, tail_label),
-    create and return a list of Node instances with those labels, and a corresponding list of
-    edges whose head and tail are those instances."""
-    
-    nodes = [Node(label, 0) for label in node_labels]
-    find_node = {node.label: node for node in nodes}.get
-    edges = [(find_node(h), find_node(t)) for (h, t) in edge_labels]
-    return nodes, edges
+# node_labels = ['a', 'b', 'c', 'd', 'e']
+# edge_labels = [('a', 'b'), ('a', 'c'), ('b', 'd'), ('b', 'e'), ('e', 'a')]
 
-node_labels = ['a', 'b', 'c', 'd', 'e']
-edge_labels = [('a', 'b'), ('a', 'c'), ('b', 'd'), ('b', 'e'), ('e', 'a')]
-
-g = Graph(*node_and_edge_labels_to_objects(node_labels, edge_labels))
+# g = Graph(*node_and_edge_labels_to_objects(node_labels, edge_labels))
 #print(g.adjacency_list)
+g = ([a, b, c, d, e], [(a, b), (a, c), (b, d), (b, e)])
 bfs(g, g.find_node('a'))
-print(spanningtree(g, g.find_node('a')))
+spanningtree(g, g.find_node('a'))
+
 print(bfs_distance(g, g.find_node('a')))
